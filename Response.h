@@ -2,16 +2,23 @@
 #include "Codec.h"
 #include "msg.pb.h"
 
+struct RespondInfo
+{
+    int status;
+    int seckeyID;
+    string clientID;
+    string serverID;
+    string data;
+};
+
 class RespondCodec : public Codec
 {
 public:
     RespondCodec();
     RespondCodec(string enc);
-    RespondCodec(int status, int seckeyID, string clientID,
-                 string serverID, string data);
+    RespondCodec(RespondInfo *info);
     void initMessage(string enc);
-    void initMessage(int status, int seckeyID, string clientID,
-                     string serverID, string data);
+    void initMessage(RespondInfo *info);
     string encodeMsg();
     void *decodeMsg();
     ~RespondCodec();
