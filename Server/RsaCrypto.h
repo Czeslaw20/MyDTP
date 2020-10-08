@@ -19,6 +19,7 @@ class RsaCrypto
 {
 public:
     RsaCrypto();
+    //通过公钥/私钥文件 -> 将内容加载到内存中的RSA对象
     RsaCrypto(string filename, bool isPrivate = true);
     ~RsaCrypto();
 

@@ -1,0 +1,9 @@
+{
+    "serverID": "BJ-QianMen-001",
+    "dbUser": "xyz",
+    "dbPasswd": "123456",
+    "dbSID": "orcl",
+    "port": 8989,
+    "maxnode": 20,
+    "shmkey": "/home/bin"
+}
