@@ -1,6 +1,8 @@
 #pragma once
 #include "Codec.h"
 #include "msg.pb.h"
+#include <iostream>
+using namespace std;
 
 struct RequestInfo
 {

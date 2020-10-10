@@ -1,6 +1,5 @@
 #pragma once
 #include <iostream>
-
 using namespace std;
 
 /*用于通信的套接字类*/
@@ -48,5 +47,5 @@ private:
     int writen(const void *buf, int count);
 
 private:
-    int m_socket; //用于通信的套接字
+    int m_socket; // 用于通信的套接字
 };

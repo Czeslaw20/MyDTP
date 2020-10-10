@@ -1,5 +1,5 @@
 #pragma once
-#include <iostream>
+#include <string>
 #include <openssl/rsa.h>
 #include <openssl/pem.h>
 
@@ -19,12 +19,15 @@ class RsaCrypto
 {
 public:
     RsaCrypto();
-    RsaCrypto(string filename, bool isPrivate = true);
+    //通过公钥/私钥文件 -> 将内容加载到内存中的RSA对象
+    RsaCrypto(string fileName, bool isPrivate = true);
     ~RsaCrypto();
 
+    //通过解析字符串得到秘钥
+    void parseKeyString(string keystr, bool pubKey = true);
+
     //生成RSA密钥对
-    void generateRsaKey(int bits, string pub = "public.pem",
-                        string pri = "private.pem");
+    void generateRsaKey(int bits, string pub = "public.pem", string pri = "private.pem");
     //公钥加密
     string rsaPubKeyEncrypt(string data);
     //私钥解密
@@ -32,16 +35,19 @@ public:
     //使用RSA签名
     string rsaSign(string data, SignLevel level = Level3);
     //使用RSA验证签名
-    bool rsaVerify(string data, string signData,
-                   SignLevel level = Level3);
+    bool rsaVerify(string data, string signData, SignLevel level = Level3);
 
 private:
+    //base64编码
+    string toBase64(const char *str, int len);
+    //base64解码
+    char *fromBase64(string str);
     //得到公钥
     bool initPublicKey(string pubfile);
     //得到私钥
     bool initPrivateKey(string prifile);
 
 private:
-    RSA *m_publicKey;  //私钥
-    RSA *m_privateKey; //公钥
+    RSA *m_publicKey;  // 私钥
+    RSA *m_privateKey; // 公钥
 };

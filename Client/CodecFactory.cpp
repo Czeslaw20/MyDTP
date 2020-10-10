@@ -3,10 +3,12 @@
 CodecFactory::CodecFactory()
 {
 }
+
 Codec *CodecFactory::createCodec()
 {
-    return nullptr;
+    return NULL;
 }
+
 CodecFactory::~CodecFactory()
 {
 }

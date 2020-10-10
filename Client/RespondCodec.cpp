@@ -1,4 +1,5 @@
 #include "RespondCodec.h"
+#include <iostream>
 
 RespondCodec::RespondCodec()
 {
@@ -38,11 +39,6 @@ string RespondCodec::encodeMsg()
 void *RespondCodec::decodeMsg()
 {
     m_msg.ParseFromString(m_encStr);
-    // cout << "status: " << m_msg.status()
-    //      << ", seckeyID: " << m_msg.seckeyid()
-    //      << ", clientID: " << m_msg.clientid()
-    //      << ", serverID: " << m_msg.serverid()
-    //      << ", data: " << m_msg.data() << endl;
     return &m_msg;
 }
 

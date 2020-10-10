@@ -24,18 +24,24 @@ TcpSocket::~TcpSocket()
 //连接服务器
 int TcpSocket::connectToHost(string ip, unsigned short port, int timeout)
 {
+    // cout << "connectToHosT函数开始执行" << endl;
     int ret = 0;
+
+    // cout << "ip：" << ip
+    //      << "port:" << port << " "
+    //      << "timeout:" << timeout << endl;
     if (port <= 0 || port > 65535 || timeout < 0)
     {
         ret = ParamError;
         return ret;
     }
+    // cout << "m_socket的值为：" << m_socket << endl;
 
     m_socket = socket(AF_INET, SOCK_STREAM, 0);
     if (m_socket < 0)
     {
         ret = errno;
-        printf("func socket() err: %d\n", ret);
+        printf("func socket() err:  %d\n", ret);
         return ret;
     }
 
@@ -45,8 +51,7 @@ int TcpSocket::connectToHost(string ip, unsigned short port, int timeout)
     servaddr.sin_port = htons(port);
     servaddr.sin_addr.s_addr = inet_addr(ip.data());
 
-    ret = connectTimeout((struct sockaddr_in *)(&servaddr),
-                         (unsigned int)timeout);
+    ret = connectTimeout((struct sockaddr_in *)(&servaddr), (unsigned int)timeout);
     if (ret < 0)
     {
         //超时
@@ -78,7 +83,7 @@ int TcpSocket::sendMsg(string sendData, int timeout)
         if (netdata == NULL)
         {
             ret = MallocError;
-            printf("func sckClient_send() mlloc Err: %d\n ", ret);
+            printf("func sckClient_send() mlloc Err:%d\n ", ret);
             return ret;
         }
         //转换为网络字节序
@@ -89,7 +94,7 @@ int TcpSocket::sendMsg(string sendData, int timeout)
         //没问题返回发送的实际字节数，应该==第二个参数：dataLen
         //失败返回：-1
         writed = writen(netdata, dataLen);
-        if (writed < dataLen)
+        if (writed < dataLen) // 发送失败
         {
             if (netdata != NULL)
             {
@@ -293,7 +298,7 @@ int TcpSocket::writeTimeout(unsigned int wait_seconds)
         }
         else if (ret == 1)
         {
-            ret = 0; //没超时
+            ret = 0; // 没超时
         }
     }
     return ret;
@@ -303,14 +308,14 @@ int TcpSocket::writeTimeout(unsigned int wait_seconds)
 //@addr：要连接的对方地址
 //@wait_seconds：等待超时秒数，如果为0表示正常模式
 //成功（未超时）返回0，失败返回-1，超时返回-1并且errno=ETIMEDOUT
-int TcpSocket::connectTimeout(struct sockaddr_in *addr, unsigned int wait_seconds)
+int TcpSocket::connectTimeout(sockaddr_in *addr, unsigned int wait_seconds)
 {
     int ret;
     socklen_t addrlen = sizeof(struct sockaddr_in);
 
     if (wait_seconds > 0)
     {
-        setNonBlock(m_socket); //设置非阻塞IO
+        setNonBlock(m_socket); // 设置非阻塞IO
     }
     ret = connect(m_socket, (struct sockaddr *)addr, addrlen);
 
@@ -421,7 +426,7 @@ int TcpSocket::writen(const void *buf, int count)
     {
         if ((nwritten = write(m_socket, bufp, nleft)) < 0)
         {
-            if (errno == EINTR) //被信号打断
+            if (errno == EINTR) // 被信号打断
             {
                 continue;
             }

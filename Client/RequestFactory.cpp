@@ -1,6 +1,6 @@
 #include "RequestFactory.h"
 
-RequestFactory::RequestFactory(string enc) : CodecFactory()
+RequestFactory::RequestFactory(std::string enc) : CodecFactory()
 {
     m_flag = false;
     m_encStr = enc;
@@ -13,7 +13,7 @@ RequestFactory::RequestFactory(RequestInfo *info) : CodecFactory()
 
 Codec *RequestFactory::createCodec()
 {
-    Codec *codec = nullptr;
+    Codec *codec = NULL;
     if (m_flag)
     {
         codec = new RequestCodec(m_info);

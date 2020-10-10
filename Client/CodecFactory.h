@@ -1,5 +1,6 @@
 #pragma once
 #include "Codec.h"
+
 class CodecFactory
 {
 public:

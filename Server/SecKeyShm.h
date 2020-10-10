@@ -1,5 +1,6 @@
 #pragma once
 #include "BaseShm.h"
+#include <string.h>
 
 class NodeSHMInfo
 {
@@ -21,12 +22,12 @@ class SecKeyShm : public BaseShm
 {
 public:
     SecKeyShm(int key, int maxNode);
-    SecKeyShm(string pathname, int maxNode);
+    SecKeyShm(string pathName, int maxNode);
+    ~SecKeyShm();
 
     void shmInit();
     int shmWrite(NodeSHMInfo *pNodeInfo);
     NodeSHMInfo shmRead(string clientID, string serverID);
-    ~SecKeyShm();
 
 private:
     int m_maxNode;

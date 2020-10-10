@@ -1,4 +1,5 @@
 #include "Codec.h"
+using namespace std;
 
 Codec::Codec()
 {
@@ -11,7 +12,7 @@ string Codec::encodeMsg()
 
 void *Codec::decodeMsg()
 {
-    return nullptr;
+    return NULL;
 }
 
 Codec::~Codec()

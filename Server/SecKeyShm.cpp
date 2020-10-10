@@ -1,12 +1,21 @@
 #include "SecKeyShm.h"
+#include <string.h>
+#include <iostream>
+using namespace std;
 
-SecKeyShm::SecKeyShm(int key, int maxNode) : BaseShm(key, maxNode * sizeof(NodeSHMInfo)), m_maxNode(maxNode)
+SecKeyShm::SecKeyShm(int key, int maxNode)
+    : BaseShm(key, maxNode * sizeof(NodeSHMInfo)), m_maxNode(maxNode)
 {
 }
-SecKeyShm::SecKeyShm(string pathname, int maxNode) : BaseShm(pathname, maxNode * sizeof(NodeSHMInfo)), m_maxNode(maxNode)
+
+SecKeyShm::SecKeyShm(string pathName, int maxNode)
+    : BaseShm(pathName, maxNode * sizeof(NodeSHMInfo)), m_maxNode(maxNode)
 {
 }
 
+SecKeyShm::~SecKeyShm()
+{
+}
 void SecKeyShm::shmInit()
 {
     if (m_shmAddr != NULL)
@@ -76,20 +85,20 @@ NodeSHMInfo SecKeyShm::shmRead(string clientID, string serverID)
     pAddr = static_cast<NodeSHMInfo *>(mapShm());
     if (pAddr == NULL)
     {
-        cout << "共享内存关联失败……" << endl;
+        cout << "共享内存关联失败..." << endl;
         return NodeSHMInfo();
     }
-    cout << "共享内存关联成功……" << endl;
+    cout << "共享内存关联成功..." << endl;
 
     //遍历网点信息
     int i = 0;
     NodeSHMInfo info;
     NodeSHMInfo *pNode = NULL;
     //通过clientID和serverID查找节点
-    cout << "maxNode:" << m_maxNode << endl;
-    for (int i = 0; i < m_maxNode; i++)
+    cout << "maxNode: " << m_maxNode << endl;
+    for (i = 0; i < m_maxNode; i++)
     {
-        pNode = pAddr + 1;
+        pNode = pAddr + i;
         cout << i << endl;
         cout << pNode->clientID << ", " << clientID.data() << endl;
         cout << pNode->serverID << ", " << serverID.data() << endl;
@@ -109,8 +118,4 @@ NodeSHMInfo SecKeyShm::shmRead(string clientID, string serverID)
 
     unmapShm();
     return info;
-}
-
-SecKeyShm::~SecKeyShm()
-{
 }

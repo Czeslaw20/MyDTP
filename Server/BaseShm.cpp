@@ -1,9 +1,7 @@
 #include "BaseShm.h"
 #include <sys/ipc.h>
 #include <sys/shm.h>
-#include <iostream>
-
-using namespace std;
+#include <string.h>
 
 const char RandX = 'x';
 BaseShm::BaseShm(int key)
@@ -32,7 +30,7 @@ BaseShm::BaseShm(string name, int size)
 void *BaseShm::mapShm()
 {
     m_shmAddr = shmat(m_shmID, NULL, 0);
-    if (m_shmAddr == (void *)(-1))
+    if (m_shmAddr == (void *)-1)
     {
         return NULL;
     }
@@ -51,18 +49,18 @@ int BaseShm::delShm()
     return ret;
 }
 
-int BaseShm::getShmID(int key, int shmsize, int flag)
+BaseShm::~BaseShm()
 {
-    cout << "shared memory size:" << shmsize << endl;
-    m_shmID = shmget(key, shmsize, flag);
+}
+
+int BaseShm::getShmID(key_t key, int shmSize, int flag)
+{
+    cout << "share memory size: " << shmSize << endl;
+    m_shmID = shmget(key, shmSize, flag);
     if (m_shmID == -1)
     {
         //写log日志
         cout << "shmget 失败" << endl;
     }
     return m_shmID;
-}
-
-BaseShm::~BaseShm()
-{
 }

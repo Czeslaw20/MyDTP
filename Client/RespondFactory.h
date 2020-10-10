@@ -1,14 +1,14 @@
 #pragma once
 #include "CodecFactory.h"
 #include "RespondCodec.h"
-#include "Codec.h"
+#include <iostream>
 
 class RespondFactory : public CodecFactory
 {
 public:
-    //创建解码对象
-    RespondFactory(string enc);
-    //创建编码对象
+    // 创建解码对象
+    RespondFactory(std::string enc);
+    // 创建编码对象
     RespondFactory(RespondInfo *info);
     Codec *createCodec();
 

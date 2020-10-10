@@ -1,4 +1,5 @@
 #include "RequestCodec.h"
+#include <iostream>
 
 RequestCodec::RequestCodec()
 {
@@ -38,11 +39,6 @@ string RequestCodec::encodeMsg()
 void *RequestCodec::decodeMsg()
 {
     m_msg.ParseFromString(m_encStr);
-    // cout << "cmdtype: " << m_msg.cmdtype()
-    //      << ", clientID: " << m_msg.clientid()
-    //      << ", serverID: " << m_msg.serverid()
-    //      << ", sign: " << m_msg.sign()
-    //      << ", data: " << m_msg.data() << endl;
     return &m_msg;
 }
 

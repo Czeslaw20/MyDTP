@@ -1,7 +1,7 @@
 {
     "clientID": "BJ-ChangPing-TBD",
     "serverID": "BJ-QianMen-001",
-    "serverIP": "127.0.0.1",
+    "serverIP": "192.168.31.234",
     "serverPort": 8989,
     "maxNode": 1,
     "shmKey": "/usr/local/bin"

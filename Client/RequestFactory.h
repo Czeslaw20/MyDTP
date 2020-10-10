@@ -1,19 +1,19 @@
 #pragma once
 #include "CodecFactory.h"
-#include "RequestCodec.h"
 #include "Codec.h"
+#include "RequestCodec.h"
+#include <iostream>
 
 class RequestFactory : public CodecFactory
 {
 public:
-    RequestFactory(string enc);
+    RequestFactory(std::string enc);
     RequestFactory(RequestInfo *info);
     Codec *createCodec();
-
     ~RequestFactory();
 
 private:
     bool m_flag;
-    string m_encStr;
+    std::string m_encStr;
     RequestInfo *m_info;
 };

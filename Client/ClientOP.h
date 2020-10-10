@@ -1,21 +1,22 @@
 #pragma once
 #include <string>
+using namespace std;
 
 struct ClientInfo
 {
-    std::string serverID;
-    std::string clientID;
-    std::string serverIP;
+    string serverID;
+    string clientID;
+    string serverIP;
     unsigned short port;
     int maxNode;
-    std::string shmKey;
+    string shmKey;
 };
 
 class ClientOP
 {
 public:
     //初始化数据，从磁盘的配置文件中
-    ClientOP(std::string filename);
+    ClientOP(string fileName);
     ~ClientOP();
 
     //1.密钥协商

@@ -1,20 +1,20 @@
 #pragma once
 #include "TcpServer.h"
 #include "TcpSocket.h"
-#include <string>
+#include <vector>
 #include <map>
 #include "msg.pb.h"
 
 //存储磁盘配置文件信息
 struct ServerInfo
 {
-    std::string serverID;
-    std::string dbUser;
-    std::string dbPasswd;
-    std::string dbSID;
+    string serverID;
+    string dbUser;
+    string dbPasswd;
+    string dbSID;
     unsigned short port;
     int maxnode;
-    std::string shmkey;
+    string shmkey;
 };
 
 enum KeyLen
@@ -27,7 +27,7 @@ enum KeyLen
 class ServerOP
 {
 public:
-    ServerOP(std::string jsonfile);
+    ServerOP(string jsonfile);
     ~ServerOP();
 
     //操作
@@ -41,8 +41,8 @@ private:
     string getRandStr(KeyLen num);
 
 private:
-    ServerInfo m_info;
     map<pthread_t, TcpSocket *> m_socket;
+    ServerInfo m_info;
     TcpServer *m_server;
 };
 

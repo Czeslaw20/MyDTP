@@ -6,10 +6,6 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 
-#include <iostream>
-#include <vector>
-using namespace std;
-
 TcpServer::TcpServer()
 {
 }
@@ -79,7 +75,7 @@ TcpSocket *TcpServer::acceptConn(int wait_seconds)
         {
             //检测读集合
             ret = select(m_lfd + 1, &accept_fdset, NULL, NULL, &timeout);
-        } while (ret < 0 && errno == EINTR); //被信号中断，再次进入循环
+        } while (ret < 0 && errno == EINTR); // 被信号中断, 再次进入循环
         if (ret <= 0)
         {
             return NULL;
@@ -90,7 +86,7 @@ TcpSocket *TcpServer::acceptConn(int wait_seconds)
     //此时再调用accept将不会阻塞
     struct sockaddr_in addrCli;
     socklen_t addrlen = sizeof(struct sockaddr_in);
-    int connfd = accept(m_lfd, (sockaddr *)&addrCli, &addrlen);
+    int connfd = accept(m_lfd, (struct sockaddr *)&addrCli, &addrlen);
     //返回已连接套接字
     if (connfd == -1)
     {

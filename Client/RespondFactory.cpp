@@ -1,6 +1,6 @@
 #include "RespondFactory.h"
 
-RespondFactory::RespondFactory(string enc) : CodecFactory()
+RespondFactory::RespondFactory(std::string enc) : CodecFactory()
 {
     m_flag = false;
     m_encStr = enc;
@@ -14,7 +14,7 @@ RespondFactory::RespondFactory(RespondInfo *info) : CodecFactory()
 
 Codec *RespondFactory::createCodec()
 {
-    Codec *codec = nullptr;
+    Codec *codec = NULL;
     if (m_flag)
     {
         codec = new RespondCodec(m_info);
