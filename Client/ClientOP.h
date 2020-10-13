@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include "SecKeyShm.h"
 using namespace std;
 
 struct ClientInfo
@@ -30,4 +31,5 @@ public:
 
 private:
     ClientInfo m_info;
+    SecKeyShm *m_shm;
 };

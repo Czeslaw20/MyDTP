@@ -4,6 +4,8 @@
 #include <vector>
 #include <map>
 #include "msg.pb.h"
+#include "SecKeyShm.h"
+#include "MySqlOP.h"
 
 //存储磁盘配置文件信息
 struct ServerInfo
@@ -44,6 +46,8 @@ private:
     map<pthread_t, TcpSocket *> m_socket;
     ServerInfo m_info;
     TcpServer *m_server;
+    SecKeyShm *m_shm;
+    MySqlOP m_sqlop;
 };
 
 //子线程的回调函数

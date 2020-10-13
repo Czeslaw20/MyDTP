@@ -26,6 +26,18 @@ ServerOP::ServerOP(string jsonfile)
     m_info.port = root["port"].asInt();
     m_info.serverID = root["serverID"].asString();
     m_info.shmkey = root["shmkey"].asString();
+
+    //创建共享内存对象
+
+    m_shm = new SecKeyShm(m_info.shmkey, m_info.maxnode);
+    m_shm->shmInit();
+
+    //连接数据库
+    bool bl = m_sqlop.connectMySql("SECMNG", "SECMNG");
+    if (!bl)
+    {
+        cout << "数据库连接失败..." << endl;
+    }
 }
 
 ServerOP::~ServerOP()
@@ -59,7 +71,7 @@ void ServerOP::startServer()
 
 string ServerOP::seckeyAgree(RequestMsg *msg)
 {
-#if 1
+#if 0
     //2 将得到的公钥写入服务器磁盘
     //写文件，文件名：客户端ID
 
@@ -114,6 +126,36 @@ string ServerOP::seckeyAgree(RequestMsg *msg)
         // 对称加密的秘钥, 使用公钥加密
         cout << "对称加密秘钥: " << seckey << endl;
         info.data = rsa.rsaPubKeyEncrypt(seckey);
+
+        //6.生成的秘钥写入到秘钥信息表
+        //inser into seckeyinfo values()
+        //clientID,serverID,keyID(秘钥编号)，
+        //创建时间，秘钥状态（是否可用），秘钥详细信息
+        //keyID(秘钥编号)->读keysn表中ikeysn字段的值
+
+        NodeSHMInfo shmNode;
+        strcpy(shmNode.clientID, msg->clientid().data());
+        strcpy(shmNode.serverID, m_info.serverID.data());
+        strcpy(shmNode.secKey, seckey.data());
+        //可用1，不可用0，秘钥注销之后设置为不可用
+        shmNode.status = 1;                    //秘钥是否可用
+        shmNode.seckeyID = m_sqlop.getKeyID(); //从数据库读
+
+        //将新的秘钥写入数据库
+        bool bl = m_sqlop.writeSecKey(&shmNode);
+        if (bl)
+        {
+            cout << "写数据库成功->秘钥信息..." << endl;
+            //更新秘钥的编号
+            m_sqlop.updateKeyID(shmNode.seckeyID + 1);
+        }
+        else
+        {
+            cout << "写数据库失败->秘钥信息..." << endl;
+        }
+
+        //7.将对称加密的秘钥写入到共享内存中
+        m_shm->shmWrite(&shmNode);
     }
     //生成序列化对象
     CodecFactory *factory = new RespondFactory(&info);

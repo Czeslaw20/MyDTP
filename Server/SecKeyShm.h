@@ -11,11 +11,11 @@ public:
         bzero(serverID, sizeof(serverID));
         bzero(secKey, sizeof(secKey));
     }
-    int status;
-    int seckeyID;
-    char clientID[12];
-    char serverID[12];
-    char secKey[128];
+    int status;   //密钥的状态：1可用 0不可用
+    int seckeyID; //秘钥的编号
+    char clientID[128];
+    char serverID[128];
+    char secKey[128]; //对称加密的秘钥
 };
 
 class SecKeyShm : public BaseShm

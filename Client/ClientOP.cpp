@@ -26,10 +26,16 @@ ClientOP::ClientOP(string fileName)
     m_info.shmKey = root["shmKey"].asString();
     m_info.port = root["serverPort"].asInt();
     m_info.maxNode = root["maxNode"].asInt();
+
+    //实例化共享内存对象
+    m_shm = new SecKeyShm(m_info.shmKey, m_info.maxNode);
+    //清空共享内存
+    m_shm->shmInit();
 }
 
 ClientOP::~ClientOP()
 {
+    delete m_shm;
 }
 
 //1.密钥协商
@@ -112,6 +118,15 @@ bool ClientOP::seckeyAgree()
         cout << "对称加密的秘钥: " << aeskey << endl;
 
         //6. 将aeskey存储到共享内存中
+        NodeSHMInfo shmNode;
+        //data()和c_str()的区别：c_str()遇到\0即停止
+        strcpy(shmNode.clientID, m_info.clientID.data());
+        strcpy(shmNode.serverID, m_info.serverID.data());
+        strcpy(shmNode.secKey, aeskey.data());
+        //可用1，不可用0，秘钥注销之后设置为不可用
+        shmNode.status = 0; //秘钥是否可用
+        shmNode.seckeyID = resMsg->seckeyid();
+        m_shm->shmWrite(&shmNode);
     }
 
     //7. 释放资源

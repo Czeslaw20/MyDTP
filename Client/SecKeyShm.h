@@ -13,8 +13,8 @@ public:
     }
     int status;
     int seckeyID;
-    char clientID[12];
-    char serverID[12];
+    char clientID[128];
+    char serverID[128];
     char secKey[128];
 };
 
